@@ -33,7 +33,7 @@ def append_to_existing_or_create_new(df, combined_df_path):
         df_date = df[df['utc_date_string'] == date]
 
         # Define the file path for the current date
-        date_file_path = f"C:/Users/91810/Desktop/ISI/US_Elections_Video_Data_Collection/data/elections{date}.csv"
+        date_file_path = f"../data/elections{date}.csv"
 
         if os.path.exists(date_file_path):
             # Load the existing DataFrame for that date
@@ -239,7 +239,7 @@ start_date="20240428"
 start_date_obj = datetime.strptime(start_date, "%Y%m%d")
 
 # Open the file in read mode
-with open('C:/Users/91810/Desktop/ISI/US_Elections_Video_Data_Collection/supplementary_files/keywords_hashtags_phase5.txt', 'r') as file:
+with open('../supplementary_files/keywords_hashtags_phase5.txt', 'r') as file:
     # Read each line and store it in a list
     lines = [line.strip() for line in file if line.strip()]
 # Print the list of phrases
@@ -280,7 +280,7 @@ while start_date != "20240504":
         df['tiktokurl'] = df.apply(lambda row: createURL(row['username'], row['id']), axis=1)
         df[['utc_year','utc_month','utc_day','utc_hour','utc_minute','utc_second','utc_date_string','utc_time_string']] = df['create_time'].apply(convert_epoch_to_datetime)
         
-        append_to_existing_or_create_new(df, "C:/Users/91810/Desktop/ISI/US_Elections_Video_Data_Collection/elections.csv")
+        append_to_existing_or_create_new(df, "../elections.csv")
 
     #new start date
     start_date_obj = datetime.strptime(start_date, "%Y%m%d")
