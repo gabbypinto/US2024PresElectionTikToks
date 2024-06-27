@@ -18,7 +18,7 @@ def setup_logging(file_path):
     """
     Create the log file for those videos (one day)
     """
-    log_dir = "/Users/91810/Desktop/ISI/US_Elections_Video_Data_Collection/download_scripts/log_files"
+    log_dir = "../download_scripts/log_files"
     print("In Setup logging")
     # Set up logging with a separate log file for each CSV file
     path_parts = file_path.parts
@@ -226,7 +226,7 @@ def process_csv_file(file_path):
     
 
     #make directory for output 
-    os.makedirs(f"/Users/91810/Desktop/ISI/US_Elections_Video_Data_Collection/metadata_csv_day_chunks_values/{date_part}", exist_ok=True)
+    os.makedirs(f"../metadata_csv_day_chunks_values/{date_part}", exist_ok=True)
 
     df['isPublic'] = df.apply(isPrivate,axis=1)
     # Create a new directory based on the CSV file name and change into it
@@ -234,7 +234,7 @@ def process_csv_file(file_path):
 
 
     directory_name = file_path.stem #the chunk
-    fullDirPath = f"/Users/91810/Desktop/ISI/US_Elections_Video_Data_Collection/videos_by_date/{date_part}/"+directory_name
+    fullDirPath = f"../videos_by_date/{date_part}/"+directory_name
     if not os.path.exists(directory_name):
         print(fullDirPath)
         os.makedirs(fullDirPath, exist_ok=True)
@@ -245,7 +245,7 @@ def process_csv_file(file_path):
     df['mp4_isValid']=df.apply(download,axis=1,args=(videoFolderPath,))
     print("mp4_isValid ","download function applied on the dataframe")
     # Save the DataFrame back to CSV
-    df.to_csv(f"/Users/91810/Desktop/ISI/US_Elections_Video_Data_Collection/metadata_csv_day_chunks_values/{date_part}/"+file_path.stem+".csv", index=False)
+    df.to_csv(f"../metadata_csv_day_chunks_values/{date_part}/"+file_path.stem+".csv", index=False)
     # print(f"Processed {file_path}")
     end_time = time.time()  # Record the end time
     execution_time = end_time - start_time  # Calculate the execution time
@@ -261,11 +261,11 @@ if __name__ == "__main__":
     # csv_file_path = sys.argv[1] 
     # print("argv[1]:",csv_file_path)
 
-    csv_file_path = "elections2024-04-26.csv"
+    csv_file_path = "elections2024-01-02.csv"
     print("argv[1]:",csv_file_path)
 
 
-    csvDir = "C:/Users/91810/Desktop/ISI/US_Elections_Video_Data_Collection/"
+    csvDir = "../data/"
     full_path = csvDir+csv_file_path
     setup_logging(Path(full_path)) #setup the log file
     print("Setup logging function completed")
