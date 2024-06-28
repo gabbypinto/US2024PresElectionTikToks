@@ -23,8 +23,8 @@ from requests.exceptions import ChunkedEncodingError
 from urllib3.exceptions import ProtocolError
 
 # client key and secret key
-client_key = "aw3fsjy1ztapoj5x"
-client_secret = "7dmdXdbTG505h50mcvl1ilnFGTSXcG9d"
+client_key = "enter key"
+client_secret = "enter secret key"
 
 def append_to_existing_or_create_new(df, combined_df_path):
     # Load the existing combined DataFrame
