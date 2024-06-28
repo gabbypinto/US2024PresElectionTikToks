@@ -1,14 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Jun 17 12:28:40 2024
-
-@author: Tanishq Salkar
-"""
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jun  4 16:46:15 2024
-
-@author: Tanishq Salkar
 """
 import sys
 import requests
