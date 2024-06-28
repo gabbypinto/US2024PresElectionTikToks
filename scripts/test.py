@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Jun  4 16:46:15 2024
+relative path given in the code
 """
 import sys
 import requests
