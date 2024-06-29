@@ -1,4 +1,12 @@
-# US2024PresElectionTikToks
+# 2024 Presidential Election TikTok Video IDs
+This repository contains the TikTok Video IDs of content related to the 2024 Presidential Election. The data was collected with TikTok's Research API. To comply with TikTok's terms of service, we are only publicly releasing the TikTok IDs of the collected TikTok videos. We will continue to be updating this repostory with more data, so stay tuned for updates!
 
-## Data Contained:
-- 6/24/2024: ids
+
+## Data Organization
+- data: contains a csv file of video IDs collected 
+- scripts: the Python code used for data collection
+- supplementary_files: contains the keywords/hashtags applied to the query, for each phase
+
+
+## Updates:
+- 6/29/2024: Posted the IDs of the content we have collected so far. The keywords/hashtags used in the query, and the scripts used for data collection were also posted. Modifications will be made on the scripts
