@@ -30,7 +30,7 @@ def append_to_existing_or_create_new(df, combined_df_path):
         df_date = df[df['utc_date_string'] == date]
 
         # Define the file path for the current date
-        date_file_path = f"C:/Users/91810/Desktop/ISI/US_Elections_Video_Data_Collection/data_2/elections{date}.csv"
+        date_file_path = f"elections<date>.csv"
 
         if os.path.exists(date_file_path):
             # Load the existing DataFrame for that date
@@ -62,10 +62,29 @@ def save_to_json_file(data, filename):
 
 
 def createURL(username,videoid):
+    """
+    Create the URL to TikTok post: the username and video's is required
+
+    Args: 
+        username(str): Username of the person that posted the TikTok video
+        videoid(int): 'id'' of the video
+
+    Returns: 
+        str: the URL to the TikTok post
+    """
     return f"https://www.tiktok.com/@{username}/video/{videoid}"
 
 
 def convert_epoch_to_datetime(input_time):
+    """
+    Convert Epoch/Unix time to UTC time
+    
+    Args:
+        input(str): The time the video was created in Epoch/UNIX time 
+
+    Returns:
+        pd.Series: The extract the time that include the year, month, day, hour, minute, second, complete date (YYY-MM-DD), and the complete time stamp (HH:MM:SS)
+    """
     utc_time_stamp = datetime.utcfromtimestamp(input_time)
 
     # Extract date and time components
@@ -82,6 +101,17 @@ def convert_epoch_to_datetime(input_time):
 
 
 def get_access_token(client_key, client_secret):
+    """
+    Fetches the Research API access token.
+
+    Args: 
+        client_key (str): Key is copied from TikTok's developer portal 
+        client_secret (str): Secret is copied from TikTok's developer portal
+
+    Returns: 
+        access_token_dict (dict): Dictionary the contains the following attributes/keys 'access_token','expires_in','token_type'
+    """
+
     # Endpoint URL
     endpoint_url = "https://open.tiktokapis.com/v2/oauth/token/"
 
@@ -104,7 +134,6 @@ def get_access_token(client_key, client_secret):
         response_json = response.json()
         keys = ['access_token', 'expires_in', 'token_type']
         access_token_dict = {key: response_json[key] for key in keys if key in response_json}
-        #print(access_token_dict)
         return access_token_dict
     else:
         # If the request was not successful, print the error response JSON
@@ -112,7 +141,24 @@ def get_access_token(client_key, client_secret):
         return response.json()
     
 def fetch_tiktok_data(start_date,end_date,keywordsList,hashtagsList,token_info):
-    count = 0
+    """
+    Fetch the metadata of the tiktok post/video
+
+    Args:
+        start_date (str, required): Date should be YYYYMMDD format. 
+        end_date (str, required): Date should be YYYYMMDD format. 
+        keywordsList (list, required): List of strings, where each string is the keyword you want to apply to the query
+        hashtagsList (list, required): List of strings, where each string is a hashtag you want to apply to the query
+        token_info (dict, required): Dictionary that contains the access token, when the token will expire, and the type
+    
+    Returns:
+        JSON,int: The metadata for each video in JSON format, and the number of videos collected
+    
+    Raises: 
+        ChunkedEncodingError: Problem reading or process 
+        ProtocolError: Could not complete the request 
+        Other: Unexpected error
+    """
     full_json_response = {}
     full_json_response['data']={}
     full_json_response['data']['videos'] = [] 
@@ -121,9 +167,6 @@ def fetch_tiktok_data(start_date,end_date,keywordsList,hashtagsList,token_info):
     headers = {
         'authorization': f"Bearer {access_token}",
     }
-
-    #https://open.tiktokapis.com/v2/research/video/query/
-
 
     url = 'https://open.tiktokapis.com/v2/research/video/query/?fields=id,like_count,create_time,region_code,share_count,view_count,comment_count,music_id,hashtag_names,username,effect_ids,playlist_id,video_description,voice_to_text'
     
@@ -139,20 +182,14 @@ def fetch_tiktok_data(start_date,end_date,keywordsList,hashtagsList,token_info):
             }, 
             "start_date":start_date,
             "end_date":end_date,
-            "max_count": 100 #max value (see documentation) = 100
+            "max_count": 100 #Max value of videos that can be returned, this is count that is posted on the TikTok Research API 
     }
     print(data)
     max_retries = 300  # Set the maximum number of retries
     retries = 0
 
-    loops = 0
     total_count = 0
     while True:
-        # if loops == 4:
-        #     sys.exit()
-        # print(headers)
-        # print(url)
-        # print(data)
         if time.time() > token_info["expires_at"]:
             token_info = get_access_token(client_key, client_secret)
             token_info['expires_at'] = time.time() + token_info['expires_in']
@@ -161,7 +198,6 @@ def fetch_tiktok_data(start_date,end_date,keywordsList,hashtagsList,token_info):
             print("token expired so new token generated")
         try:
             response = requests.post(url, headers=headers, json=data)
-           # print(response)
             if response.status_code == 200:
                 if response.json()["data"]["has_more"] != True:
                     full_json_response['data']['videos'].extend(response.json()['data']['videos'])
@@ -169,51 +205,47 @@ def fetch_tiktok_data(start_date,end_date,keywordsList,hashtagsList,token_info):
                     print("cur length:",len(response.json()['data']['videos']))
                     return full_json_response,total_count
                 elif response.json()["data"]["has_more"] == True:
-
                     next_cursor = response.json()['data']['cursor']
-                    #print(response.json())
                     next_search_id = response.json()['data']['search_id']
                     data['cursor'] = next_cursor
                     data['search_id'] = next_search_id
                     print("cur length in cursor :",len(response.json()['data']['videos']))
-                    # print("cur length:",len(response.json()['data']['videos']))
                     full_json_response['data']['videos'].extend(response.json()['data']['videos'])
                     time.sleep(40)
                     total_count += len(response.json()['data']['videos'])
                     print("Total Count: ",total_count)
                     if total_count>=5000:
                         return full_json_response,total_count
-            elif response.status_code == 400:
+            elif response.status_code == 400: 
+                #400 error
                 print("400 error wait for some time")
                 time.sleep(50)
-            elif response.status_code == 401: #token expired
+            elif response.status_code == 401: 
+                #401 error: Token expired
                 print("Error:",response.status_code,response.text)
-                # access_token =  get_access_token(client_key, client_secret)
-                print("will generate a new token in next iteration: ")
-                #return full_json_response,total_count
-            elif response.status_code == 429: #limit passed
-                # print("status code 429")
+                print("Wll generate a new token in next iteration: ")
+            elif response.status_code == 429: 
+                #429 error: Limit exceeded
                 print("Error:",response.status_code,response.text)
                 return full_json_response,total_count
-            elif response.status_code == 500: #internal server error
+            elif response.status_code == 500: 
+                #500 error: Internal server error
                 print("Error:",response.status_code,response.text)
                 retries += 1
                 if retries >= max_retries:
                     return full_json_response, total_count
-                # time.sleep(160 * retries)
                 time.sleep(80)
             elif response.status_code == 503: 
+                #503 error
                 print("Error:",response.status_code,response.text)
-                # sys.exit()
                 time.sleep(100)
-            elif response.status_code == 504: #Request timed out error
+            elif response.status_code == 504:
+                #504 error: Request timed out error
                 print("Error:",response.status_code,response.text)
-                # sys.exit()
                 time.sleep(50)
             else:
                 print("Error:", response.status_code, response.text)
                 return full_json_response,total_count
-            # loops+=1
         except (ChunkedEncodingError, ProtocolError) as e:
             retries += 1
             if retries >= max_retries:
@@ -225,62 +257,54 @@ def fetch_tiktok_data(start_date,end_date,keywordsList,hashtagsList,token_info):
             print(f"Unexpected error: {e}")
             return full_json_response, total_count
     
-#start date (phase 1): 11/01/2023        
-#end date (phase 1): 01/15/2024
-        
+
 dict1 = dict()
-#phase 4: March 6th - remove dean phillips and nikki haley
-start_date="20240518"  
-# end_date=""
+start_date="YYYYMMDD"  
 
 # Convert the string to a datetime object
 start_date_obj = datetime.strptime(start_date, "%Y%m%d")
 
 # Open the file in read mode
-with open('C:/Users/91810/Desktop/ISI/US_Elections_Video_Data_Collection/supplementary_files/keywords_hashtags_phase5.txt', 'r') as file:
-    # Read each line and store it in a list
+with open("<FILE PATH TO TEXTFILE CONTAINING KEYWORDS AND HASTAGS>", 'r') as file:
+    # Read each line (hashtag/keywords and store it in a list) 
     lines = [line.strip() for line in file if line.strip()]
-# Print the list of phrases
-# print(lines)
+
 keywordsList= lines
 hashtagsList = lines
+
+#Obtain the access token
 token_info = get_access_token(client_key, client_secret)
+#Obtain token's expiration date
 token_info['expires_at'] = time.time() + token_info['expires_in']
-while start_date != "20240606":
+while start_date != "YYYYMMDD":  #insert the date you want the loop to start
     # Add one day to the date
     end_date_obj = start_date_obj + timedelta(days=1)
     # Convert the new date back to string format
     end_date_str = end_date_obj.strftime("%Y%m%d")
     print("start str:",start_date)
     print("end str:",end_date_str)
-    
-    # token_info = get_access_token(client_key, client_secret)
-    # token_info['expires_at'] = time.time() + token_info['expires_in']
     data,total = fetch_tiktok_data(start_date,end_date_str,keywordsList=keywordsList,hashtagsList=hashtagsList,token_info=token_info)
     dict1[start_date] =total
     print("total videos:",total)
-    print("==========================")
 
     if total==0:
-        print("nothing returned")
+        print("Nothing Returned")
         sys.exit()
-
-    # put the data into a json file 
+    #Save the data into a JSON file 
     if data:
         save_to_json_file(data, f'{start_date}_{end_date_str}_elections.json')
 
-    #put data into csv file
+    #Put data into csv file
     if data:
         df = pd.DataFrame(data['data']['videos'])
-
-
-        #Add the tiktok urls
+        #Apply function that creates the URL to the TikTok
         df['tiktokurl'] = df.apply(lambda row: createURL(row['username'], row['id']), axis=1)
+        #Extract the year,month, day, hour,minute, seconds in utc time, the create_at is in Epoch time/Unix time
         df[['utc_year','utc_month','utc_day','utc_hour','utc_minute','utc_second','utc_date_string','utc_time_string']] = df['create_time'].apply(convert_epoch_to_datetime)
-        
-        append_to_existing_or_create_new(df, "C:/Users/91810/Desktop/ISI/US_Elections_Video_Data_Collection/New_folder/elections.csv")
+        #Append data to the "main" file, where all data for each video is stored
+        append_to_existing_or_create_new(df, "FILE PATH TO your main file, e.g. elections.csv")
 
-    #new start date
+    #Increate the start date by 1 day
     start_date_obj = datetime.strptime(start_date, "%Y%m%d")
     start_date_obj = start_date_obj + timedelta(days=1)
     start_date = start_date_obj.strftime("%Y%m%d")
