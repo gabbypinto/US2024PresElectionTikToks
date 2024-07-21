@@ -13,3 +13,12 @@ This repository contains the TikTok Video IDs of content related to the 2024 Pre
     - Posted the IDs of the content we have collected so far. The keywords/hashtags used in the query, and the scripts used for data collection were also posted. Modifications will be made on the scripts
 - 7/20/2024: 
     - Updated the metadata collection script (metadata_collection.py)
+
+
+## Note:
+- It is required to obtain access to the TikTok Research API to collect the metadata via /script/metadata_collection.py
+
+
+## Memos:
+Check out our memo that provides a deeper insight into the dataset: https://arxiv.org/abs/2407.01471
+
