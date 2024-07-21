@@ -1,5 +1,19 @@
-# -*- coding: utf-8 -*-
 """
+Script Name: metadata_collection.py
+Authors: Gabriela Pinto, Tanishq Salkar 
+Emails: gpinto@usc.edu, salkar@usc.edu
+Date: 2024/07/20
+
+Description: 
+    This scripts performs metadata video collection using the TikTok Research API.
+
+Usage: 
+    Requires a textfile of the keywords and hashtags, contained in /supplementary_file/keywords_hashtags_phase<#>.txt
+    Requires the file path to your main csv file or the file path of where you want the script to be created
+    How to run the script: python3 metadata_collection.py
+
+Dependencies:
+    Required libraries or modules are listed in requirements.txt
 """
 import sys
 import requests
@@ -18,6 +32,13 @@ client_key = "enter key"
 client_secret = "enter secret key"
 
 def append_to_existing_or_create_new(df, combined_df_path):
+    """
+    Appends the data returned from the API to the 'main' csv that contains everything collected thus far
+
+    Args: 
+        df(Pandas dataframe): Username of the person that posted the TikTok video
+        combined_df_path(str): File path to the 'main' csv file        
+    """
     # Load the existing combined DataFrame
     if os.path.exists(combined_df_path):
         combined_df = pd.read_csv(combined_df_path)
@@ -57,6 +78,14 @@ def append_to_existing_or_create_new(df, combined_df_path):
     combined_df.to_csv(combined_df_path, index=False)
 
 def save_to_json_file(data, filename):
+    """
+    Save the save into a JSON file
+
+    Args:
+        data(dict): The response from the API and additional attributes
+        filename(str): Path to the JSON file that will be created
+    """
+
     with open(filename, 'w') as f:
         json.dump(data, f, indent=4)
 
@@ -67,7 +96,7 @@ def createURL(username,videoid):
 
     Args: 
         username(str): Username of the person that posted the TikTok video
-        videoid(int): 'id'' of the video
+        videoid(int): 'id' of the video
 
     Returns: 
         str: the URL to the TikTok post
