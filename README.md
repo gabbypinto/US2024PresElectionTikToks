@@ -15,8 +15,11 @@ This repository contains the TikTok Video IDs of content related to the 2024 Pre
     - Updated the metadata collection script (metadata_collection.py)
 
 
-## Note
-- It is required to obtain access to the TikTok Research API to collect the metadata via /script/metadata_collection.py
+## Requirements
+It is required to obtain access to the TikTok Research API to collect the metadata via /script/metadata_collection.py
+
+## Contact 
+Please email gpinto@usc.edu
 
 
 ## Memos
