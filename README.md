@@ -3,36 +3,43 @@ This repository contains the TikTok Video IDs of content related to the 2024 Pre
 
 
 ## 🗄 Data Organization
-- data: contains a csv file of video IDs collected 
-- scripts: the Python code used for data collection
-- supplementary_files: contains the keywords/hashtags applied to the query, for each phase
+- **`data/`**: Contains a CSV file of video IDs collected.
+- **`scripts/`**: Contains the Python code used for data collection.
+- **`supplementary_files/`**: Lists the keywords and hashtags applied in each phase of data collection.
 
 
-## 🔔 Updates
-- 6/29/2024: 
-    - Posted the IDs of the content we have collected so far. The keywords/hashtags used in the query, and the scripts used for data collection were also posted. Modifications will be made on the scripts
-- 7/20/2024: 
-    - Updated the metadata collection script (metadata_collection.py)
-- 11/1/2024:
-    - More metadata (video IDs) uploaded: /data/TikTok_IDs_v2.csv
-    - Videos with publication dates: 11/1/2023 - 10/28/2024
-    - Filled in gaps in TikTok_IDs_Memo1.csv
+
+## 🗓 Update Log
+- **6/29/2024**
+  - Initial release of collected video IDs.
+  - Published keywords/hashtags used in query and scripts for data collection (with future modifications planned).
+
+- **7/20/2024**
+  - Updated metadata collection script (`metadata_collection.py`).
+
+- **11/1/2024**
+  - Added additional metadata in `/data/TikTok_IDs_v2.csv` (covering publication dates 11/1/2023 - 10/24/2024).
+  - Filled gaps in `TikTok_IDs_Memo1.csv`.
+
 
 
 
 ## 🧰 Requirements
-- It is required to obtain access to the TikTok Research API to collect the metadata via /script/metadata_collection.py
-- For comment collection you need to use the Duoyin API
-- For user information collected, we used the TikTok Unofficial API
-- For users' reposted videos, we used the TikTok Unofficial API
+To fully utilize the resources in this repository, please ensure you have access to:
+- **TikTok Research API**: For reposted videos and metadata collection via `scripts/metadata_collection.py`.
+- **Duoyin API**: For collecting comments.
+- **TikTok Unofficial API**: For collecting user information.
+
 
 ## ✉ Contact 
-Please email Gabriela Pinto: gpinto@usc.edu
+For any inquiries, please reach out to **Gabriela Pinto** at [gpinto@usc.edu](mailto:gpinto@usc.edu).
 
 
 ## 📘 Memo Updates
-- Check out our memo that provides a deeper insight into the dataset: https://arxiv.org/abs/2407.01471
-- We will posted an updated version of the memo next week..stay tuned!
+For an in-depth analysis of the dataset, check out our memo on arXiv: [https://arxiv.org/abs/2407.01471](https://arxiv.org/abs/2407.01471). An updated version will be available next week, so stay tuned!
+
+
+
 
 
 
