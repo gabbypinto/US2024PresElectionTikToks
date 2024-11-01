@@ -20,7 +20,7 @@ This repository contains the TikTok Video IDs of content related to the 2024 Pre
 - **11/1/2024**
   - Added additional metadata in `/data/TikTok_IDs_v2.csv` (covering publication dates 11/1/2023 - 10/24/2024). 
   - Filled gaps in `TikTok_IDs_Memo1.csv`.
-  - Total IDs: 3176949
+  - Total IDs: 3,176,949
 
 
 
