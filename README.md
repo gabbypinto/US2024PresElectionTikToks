@@ -22,7 +22,7 @@ This repository contains the TikTok Video IDs of content related to the 2024 Pre
 - For users' reposted videos, we used the TikTok Unofficial API
 
 ## Contact 
-Please email gpinto@usc.edu
+Please email Gabriela Pinto: gpinto@usc.edu
 
 
 ## Memo Updates
