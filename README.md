@@ -16,12 +16,18 @@ This repository contains the TikTok Video IDs of content related to the 2024 Pre
 
 
 ## Requirements
-It is required to obtain access to the TikTok Research API to collect the metadata via /script/metadata_collection.py
+- It is required to obtain access to the TikTok Research API to collect the metadata via /script/metadata_collection.py
+- For comment collection you need to use the Duoyin API
+- For user information collected, we used the TikTok Unofficial API
+- For users' reposted videos, we used the TikTok Unofficial API
 
 ## Contact 
 Please email gpinto@usc.edu
 
 
-## Memos
-Check out our memo that provides a deeper insight into the dataset: https://arxiv.org/abs/2407.01471
+## Memo Updates
+- Check out our memo that provides a deeper insight into the dataset: https://arxiv.org/abs/2407.01471
+- We will posted an updated version of the memo next week..stay tuned!
+
+
 
