@@ -89,7 +89,7 @@ jill stein
 jillstein 
 Jill Stein 
 JillStein 
-CornellWest 
-cornellwest 
+CornelWest 
+cornelwest 
 
 

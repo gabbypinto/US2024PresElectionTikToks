@@ -72,7 +72,7 @@ third party
 Green party
 green party 
 Independent party
-indepdent party
+independent party
 RFKJr
 RFK Jr.
 RFK Jr
@@ -88,7 +88,7 @@ jill stein
 jillstein 
 Jill Stein 
 JillStein 
-CornellWest 
-cornellwest 
+CornelWest 
+cornelwest 
 
 
